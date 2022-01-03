@@ -38,7 +38,7 @@
 
 double DeltaT::getDeltaT(int year)
 {
-	double t{ 2025.0 };
+	double t{ 25.0 };
 
 	if ( (year < 1900) || (year > 2049))
 	{
@@ -74,7 +74,7 @@ double DeltaT::getDeltaT(int year)
 			0.000651814 * pow(t, 4) + 0.00002373599 * pow(t, 5);
 	}
 
-	if ((year >= 2005) && (year < 2049))
+	if ((year >= 2005) && (year < 2050))
 	{
 		t = static_cast<double>(year) - 2000.0;
 		deltaT = 62.92 + 0.32217 * t + 0.005589 * t*t;
