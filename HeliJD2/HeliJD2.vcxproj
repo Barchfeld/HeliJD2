@@ -143,11 +143,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DeltaT.cpp" />
     <ClCompile Include="HeliJD2.cpp" />
     <ClCompile Include="jd.cpp" />
     <ClCompile Include="VarStar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DeltaT.h" />
     <ClInclude Include="jd.h" />
     <ClInclude Include="VarStar.h" />
   </ItemGroup>

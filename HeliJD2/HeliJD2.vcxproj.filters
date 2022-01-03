@@ -24,6 +24,9 @@
     <ClCompile Include="VarStar.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="DeltaT.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="jd.h">
@@ -31,6 +34,9 @@
     </ClInclude>
     <ClInclude Include="VarStar.h">
       <Filter>Quelldateien</Filter>
+    </ClInclude>
+    <ClInclude Include="DeltaT.h">
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
