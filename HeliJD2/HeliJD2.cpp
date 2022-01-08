@@ -9,6 +9,7 @@
 #include <boost/program_options.hpp>
 #include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/log/trivial.hpp>
 #include <string>
 #include <iostream>
 #include <vector>
@@ -18,6 +19,7 @@
 using namespace std;
 namespace pt = boost::property_tree;
 namespace po = boost::program_options;
+namespace logging = boost::log;
 
 std::string getGCVSPage(std::string const& star) {
     // http://www.sai.msu.su/gcvs/cgi-bin/search.cgi?search=v456+sgr
@@ -38,6 +40,8 @@ std::string getCDSPage(std::string const& star) {
     // http://cdsweb.u-strasbg.fr/cgi-bin/nph-sesame/-oIxp/?v456+sgr
     boost::asio::ip::tcp::iostream stream;
 
+    BOOST_LOG_TRIVIAL(info) << "Start getCDSPage";
+
     stream.connect("cdsweb.u-strasbg.fr", "http");
     stream << "GET /cgi-bin/nph-sesame/-oIxp/?" << star << " HTTP/1.1\r\n";
     stream << "Host: cdsweb.u-strasbg.fr\r\n";
@@ -46,6 +50,9 @@ std::string getCDSPage(std::string const& star) {
 
     std::ostringstream os;
     os << stream.rdbuf();
+
+    BOOST_LOG_TRIVIAL(info) << os.str();
+
     return os.str();
 }
 
@@ -77,14 +84,16 @@ VarStar createVarStarfromCDSXML(std::string const& cdsXmlString) {
                                 "  </Resolver>\n"
     };
 
+    BOOST_LOG_TRIVIAL(info) << "Start createVarStarfromCDSXML";
+
 
     // Abschneiden der ersten Bytes, da aus Kommunikation und kein XML
     std::size_t found = cdsXmlString.find("<Resolver");
-    std::size_t foundEnd = cdsXmlString.find("</Target");
+    std::size_t foundEnd = cdsXmlString.find("</Resolver") + 12;
     std::size_t len = cdsXmlString.length();
     std::string tmp = cdsXmlString.substr(found, foundEnd - found);
-    // Debug:
-    //std::cout << "#####" << std::endl << tmp << std::endl << "#####" << std::endl;
+
+    //BOOST_LOG_TRIVIAL(info) << "#####" << std::endl << tmp << std::endl << "#####" << std::endl;
 
     std::stringstream ss;
     ss << tmp;
@@ -120,6 +129,8 @@ std::string getGCVSStarLine(std::string starPage) {
     std::string empty{};
     std::vector<std::string> starPageLines;
 
+    BOOST_LOG_TRIVIAL(info) << "Start getGCVSStarLine";
+
     boost::split(starPageLines, starPage, [](char c) {return c == '\n'; });
 
     int i{ 0 };
@@ -139,12 +150,14 @@ std::string getGCVSStarLine(std::string starPage) {
 
 int main(int argc, char** argv) {
 
+    BOOST_LOG_TRIVIAL(info) << "Start program";
+
     // fuer GCVS: Namen wie in http://www.sai.msu.su/gcvs/gcvs/name.txt beschrieben
     std::string star{ "bet+lyr" };
     std::string observationDateTime{ "2022-02-28T23:43:00" }; // ISO 8601:2000
 
     po::options_description desc
-    ("Aufruf : <program> --star <'star name'> --timestamp <'UTC iso 8601 timestamp'>\n", 80);
+    ("Aufruf : <program> --star \"star name\" --timestamp \"UTC iso 8601 timestamp\" \n", 80);
 
     desc.add_options()
     ("star", po::value<std::string>()->required(), 
