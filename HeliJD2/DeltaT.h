@@ -1,11 +1,8 @@
 #pragma once
+#include <string>
 
-class DeltaT
-{
-public:
-	double getDeltaT(int year);
+double getDeltaT(int year);
 
-private:
-	double deltaT{0.0};
-};
+double getDeltaT(std::string isoDateString);
+
 

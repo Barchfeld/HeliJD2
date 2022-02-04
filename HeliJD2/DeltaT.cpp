@@ -1,6 +1,10 @@
 ﻿#include "DeltaT.h"
 
 #include <cmath>
+#include <string>
+#include <boost/algorithm/string.hpp>
+
+
 
 // 
 // https://eclipse.gsfc.nasa.gov/SEcat5/deltatpoly.html
@@ -36,9 +40,10 @@
 //	ΔT = 62.92 + 0.32217 * t + 0.005589 * t ^ 2
 //	where : t = y - 2000
 
-double DeltaT::getDeltaT(int year)
+double getDeltaT(int const year)
 {
 	double t{ 25.0 };
+	double deltaT{ 70.0 };
 
 	if ( (year < 1900) || (year > 2049))
 	{
@@ -83,3 +88,16 @@ double DeltaT::getDeltaT(int year)
 
 	return deltaT;
 }
+
+double getDeltaT(std::string isoDateString)
+{
+
+	boost::algorithm::trim(isoDateString);
+	std::string yearStr{};
+	std::string::size_type sz;
+
+	yearStr = isoDateString.substr(0, 4);
+	int const year = std::stoi(isoDateString, &sz);
+	return getDeltaT(year);
+}
+

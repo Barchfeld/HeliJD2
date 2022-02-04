@@ -15,6 +15,7 @@
 #include <vector>
 #include "VarStar.h"
 #include "jd.h"
+#include "DeltaT.h"
 
 using namespace std;
 namespace pt = boost::property_tree;
@@ -51,7 +52,7 @@ std::string getCDSPage(std::string const& star) {
     std::ostringstream os;
     os << stream.rdbuf();
 
-    BOOST_LOG_TRIVIAL(info) << os.str();
+    //BOOST_LOG_TRIVIAL(info) << os.str();
 
     return os.str();
 }
@@ -193,6 +194,8 @@ int main(int argc, char** argv) {
     VarStar varStar = createVarStarfromCDSXML(starPage);
 
     long double jdutc = jd(observationDateTime);
+    double deltaT = getDeltaT(observationDateTime);
+    long double jdut = jdutc;
 
 
     std::cout << "Berechnung Heliozentrisches JD" << std::endl;
@@ -204,6 +207,8 @@ int main(int argc, char** argv) {
     std::cout << "Type (CDS)           : " << varStar.getOType() << std::endl;
     std::cout << "ObservationDate (UTC): " << observationDateTime << std::endl;
     std::cout << "JD (UTC)             : " << std::fixed << jdutc << std::endl;
+    std::cout << "delta T              : " << deltaT << std::endl;
+
 
     /*
         starPage = getGCVSPage(star);
