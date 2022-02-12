@@ -195,7 +195,7 @@ int main(int argc, char** argv) {
 
     long double jdutc = jd(observationDateTime);
     double deltaT = getDeltaT(observationDateTime);
-    long double jdut = jdutc;
+    long double jdtt = jdutc + deltaT / 86400.0;
 
 
     std::cout << "Berechnung Heliozentrisches JD" << std::endl;
@@ -208,6 +208,8 @@ int main(int argc, char** argv) {
     std::cout << "ObservationDate (UTC): " << observationDateTime << std::endl;
     std::cout << "JD (UTC)             : " << std::fixed << jdutc << std::endl;
     std::cout << "delta T              : " << deltaT << std::endl;
+    std::cout << "JD (TT)              : " << jdtt << std::endl;
+
 
 
     /*
