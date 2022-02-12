@@ -9,7 +9,10 @@
 // 
 // https://eclipse.gsfc.nasa.gov/SEcat5/deltatpoly.html
 //
-//  Between years 1900 and 1920, calculate:
+// We define the decimal year "y" as follows :
+//     y = year + (month - 0.5) / 12
+//
+// Between years 1900 and 1920, calculate:
 //
 // ΔT = -2.79 + 1.494119 * t - 0.0598939 * t ^ 2 + 0.0061966 * t ^ 3 - 0.000197 * t ^ 4
 // where: t = y - 1900
@@ -40,48 +43,49 @@
 //	ΔT = 62.92 + 0.32217 * t + 0.005589 * t ^ 2
 //	where : t = y - 2000
 
-double getDeltaT(int const year)
+double getDeltaT(int const year, int const month)
 {
 	double t{ 25.0 };
 	double deltaT{ 70.0 };
+	double y = year + (month - 0.5) / 12.;
 
-	if ( (year < 1900) || (year > 2049))
+	if ( (y < 1900) || (y > 2049))
 	{
 		throw 9998;
 	}
 
-	if ((year >= 1900) && (year < 1920))
+	if ((y >= 1900) && (y < 1920))
 	{
 		throw 9997;
 	}
 
-	if ((year >= 1920) && (year < 1941))
+	if ((y >= 1920) && (y < 1941))
 	{
 		throw 9996;
 	}
 
-	if ((year >= 1941) && (year < 1961))
+	if ((y >= 1941) && (y < 1961))
 	{
-		t = static_cast<double>(year) - 1950.0;
+		t = y - 1950.0;
 		deltaT = 29.07 + 0.407 * t - t*t / 233 + t*t*t / 2547;
 	}
 
-	if ((year >= 1961) && (year < 1986))
+	if ((y >= 1961) && (y < 1986))
 	{
-		t = static_cast<double>(year) - 1975.0;
+		t = y - 1975.0;
 		deltaT = 45.45 + 1.067 * t - t * t / 260 - t * t * t / 718;
 	}
 
-	if ((year >= 1986) && (year < 2005))
+	if ((y >= 1986) && (y < 2005))
 	{
-		t = static_cast<double>(year) - 2000.0;
+		t = y - 2000.0;
 		deltaT = 63.86 + 0.3345 * t - 0.060374 * t * t + 0.0017275 * pow(t, 3) + 
 			0.000651814 * pow(t, 4) + 0.00002373599 * pow(t, 5);
 	}
 
-	if ((year >= 2005) && (year < 2050))
+	if ((y >= 2005) && (y < 2050))
 	{
-		t = static_cast<double>(year) - 2000.0;
+		t = y - 2000.0;
 		deltaT = 62.92 + 0.32217 * t + 0.005589 * t*t;
 	}
 
@@ -94,10 +98,13 @@ double getDeltaT(std::string isoDateString)
 
 	boost::algorithm::trim(isoDateString);
 	std::string yearStr{};
+	std::string monthStr{};
 	std::string::size_type sz;
 
 	yearStr = isoDateString.substr(0, 4);
-	int const year = std::stoi(isoDateString, &sz);
-	return getDeltaT(year);
+	monthStr = isoDateString.substr(5, 2);
+	int const year = std::stoi(yearStr, &sz);
+	int const month = std::stoi(monthStr, &sz);
+	return getDeltaT(year, month);
 }
 

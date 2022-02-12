@@ -1,4 +1,4 @@
-// HeliJD2.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
+// HeliJD2.cpp : 
 //
 
 
@@ -52,7 +52,7 @@ std::string getCDSPage(std::string const& star) {
     std::ostringstream os;
     os << stream.rdbuf();
 
-    //BOOST_LOG_TRIVIAL(info) << os.str();
+    // BOOST_LOG_TRIVIAL(info) << os.str();
 
     return os.str();
 }
@@ -85,7 +85,7 @@ VarStar createVarStarfromCDSXML(std::string const& cdsXmlString) {
                                 "  </Resolver>\n"
     };
 
-    BOOST_LOG_TRIVIAL(info) << "Start createVarStarfromCDSXML";
+    // BOOST_LOG_TRIVIAL(info) << "Start createVarStarfromCDSXML";
 
 
     // Abschneiden der ersten Bytes, da aus Kommunikation und kein XML
@@ -94,7 +94,7 @@ VarStar createVarStarfromCDSXML(std::string const& cdsXmlString) {
     std::size_t len = cdsXmlString.length();
     std::string tmp = cdsXmlString.substr(found, foundEnd - found);
 
-    //BOOST_LOG_TRIVIAL(info) << "#####" << std::endl << tmp << std::endl << "#####" << std::endl;
+    // BOOST_LOG_TRIVIAL(info) << "#####" << std::endl << tmp << std::endl << "#####" << std::endl;
 
     std::stringstream ss;
     ss << tmp;
