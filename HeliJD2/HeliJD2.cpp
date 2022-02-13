@@ -16,6 +16,7 @@
 #include "VarStar.h"
 #include "jd.h"
 #include "DeltaT.h"
+#include "HeliCorr.h"
 
 using namespace std;
 namespace pt = boost::property_tree;
@@ -41,7 +42,7 @@ std::string getCDSPage(std::string const& star) {
     // http://cdsweb.u-strasbg.fr/cgi-bin/nph-sesame/-oIxp/?v456+sgr
     boost::asio::ip::tcp::iostream stream;
 
-    BOOST_LOG_TRIVIAL(info) << "Start getCDSPage";
+    //BOOST_LOG_TRIVIAL(info) << "Start getCDSPage";
 
     stream.connect("cdsweb.u-strasbg.fr", "http");
     stream << "GET /cgi-bin/nph-sesame/-oIxp/?" << star << " HTTP/1.1\r\n";
@@ -130,12 +131,12 @@ std::string getGCVSStarLine(std::string starPage) {
     std::string empty{};
     std::vector<std::string> starPageLines;
 
-    BOOST_LOG_TRIVIAL(info) << "Start getGCVSStarLine";
+    //BOOST_LOG_TRIVIAL(info) << "Start getGCVSStarLine";
 
     boost::split(starPageLines, starPage, [](char c) {return c == '\n'; });
 
     int i{ 0 };
-    long patternCount{ 0 };
+    long long patternCount{ 0 };
     for (std::string line : starPageLines) {
         patternCount = std::count(line.begin(), line.end(), '|');
         // patternCount could be 0, 1, or 21
@@ -151,7 +152,7 @@ std::string getGCVSStarLine(std::string starPage) {
 
 int main(int argc, char** argv) {
 
-    BOOST_LOG_TRIVIAL(info) << "Start program";
+    //BOOST_LOG_TRIVIAL(info) << "Start program";
 
     // fuer GCVS: Namen wie in http://www.sai.msu.su/gcvs/gcvs/name.txt beschrieben
     std::string star{ "bet+lyr" };
@@ -196,6 +197,8 @@ int main(int argc, char** argv) {
     long double jdutc = jd(observationDateTime);
     double deltaT = getDeltaT(observationDateTime);
     long double jdtt = jdutc + deltaT / 86400.0;
+    long double helcorr = heliCorr(jdtt, varStar);
+    long double jdhc = jdtt + helcorr;
 
 
     std::cout << "Berechnung Heliozentrisches JD" << std::endl;
@@ -209,7 +212,8 @@ int main(int argc, char** argv) {
     std::cout << "JD (UTC)             : " << std::fixed << jdutc << std::endl;
     std::cout << "delta T              : " << deltaT << std::endl;
     std::cout << "JD (TT)              : " << jdtt << std::endl;
-
+    std::cout << "heliozentrische Korr.: " << helcorr << std::endl;
+    std::cout << "JD (HC)              : " << jdhc << std::endl;
 
 
     /*

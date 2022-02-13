@@ -27,6 +27,9 @@
     <ClCompile Include="DeltaT.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="HeliCorr.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="jd.h">
@@ -36,6 +39,9 @@
       <Filter>Quelldateien</Filter>
     </ClInclude>
     <ClInclude Include="DeltaT.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="HeliCorr.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

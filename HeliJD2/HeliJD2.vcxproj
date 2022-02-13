@@ -80,6 +80,8 @@
     <LinkIncremental>true</LinkIncremental>
     <PublicIncludeDirectories>$(PublicIncludeDirectories)</PublicIncludeDirectories>
     <LibraryPath>F:\boost_1_78_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <CopyLocalProjectReference>true</CopyLocalProjectReference>
+    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -144,12 +146,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DeltaT.cpp" />
+    <ClCompile Include="HeliCorr.cpp" />
     <ClCompile Include="HeliJD2.cpp" />
     <ClCompile Include="jd.cpp" />
     <ClCompile Include="VarStar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeltaT.h" />
+    <ClInclude Include="HeliCorr.h" />
     <ClInclude Include="jd.h" />
     <ClInclude Include="VarStar.h" />
   </ItemGroup>
